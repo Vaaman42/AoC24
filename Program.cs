@@ -6,12 +6,83 @@
         case "1":
             Day1();
             break;
+        case "2":
+            Day2();
+            break;
         default:
             Console.WriteLine("Incorrect input, try again.");
             break;
     };
 }
 while (true);
+
+void Day2()
+{
+    Console.WriteLine("Enter input, followed by \"END\"");
+    var safeReportsPart1 = 0;
+    var safeReportsPart2 = 0;
+    var input = Console.ReadLine();
+    do
+    {
+        List<int> report = [];
+
+        foreach (var levelStr in input.Split(' '))
+        {
+            report.Add(int.Parse(levelStr));
+        }
+
+        if (ProcessReport(report))
+        {
+            safeReportsPart1++;
+            safeReportsPart2++;
+        }
+        else
+        {
+            for (var i = 0; i < report.Count; i++)
+            {
+                var testReport = report.ToList();
+                testReport.RemoveAt(i);
+
+                if (ProcessReport(testReport))
+                {
+                    safeReportsPart2++;
+                    break;
+                }
+            }
+        }
+
+        input = Console.ReadLine();
+    } while (input != "END");
+
+    Console.WriteLine($"PART 1: {safeReportsPart1}");
+    Console.WriteLine($"PART 2: {safeReportsPart2}");
+}
+
+bool ProcessReport(List<int> report)
+{
+    var increasing = report[0] < report[1];
+
+    for (var i = 1; i < report.Count; i++)
+    {
+        var level = report[i];
+        var previousLevel = report[i - 1];
+
+        if (previousLevel == level)
+        {
+            return false;
+        }
+        else if (increasing && (previousLevel > level || level - previousLevel > 3))
+        {
+            return false;
+        }
+        else if (!increasing && (previousLevel < level || previousLevel - level > 3))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 void Day1()
 {
