@@ -41,12 +41,7 @@ void Day3()
                 continue;
             }
 
-            var splittedInput = match.Value.TrimStart('m')
-                                      .TrimStart('u')
-                                      .TrimStart('l')
-                                      .TrimStart('(')
-                                      .TrimEnd(')')
-                                      .Split(',');
+            var splittedInput = match.Value.TrimStart('m', 'u', 'l', '(').TrimEnd(')').Split(',');
 
             result += int.Parse(splittedInput[0]) * int.Parse(splittedInput[1]);
             if (enabled)
