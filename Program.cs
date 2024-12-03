@@ -1,20 +1,66 @@
-﻿do
+﻿
+using System.Text.RegularExpressions;
+
+do
 {
     Console.WriteLine("Input day");
     switch (Console.ReadLine())
     {
         case "1":
-            Day1();
-            break;
+            while (true) Day1();
         case "2":
-            Day2();
-            break;
+            while (true) Day2();
+        case "3":
+            while (true) Day3();
         default:
             Console.WriteLine("Incorrect input, try again.");
             break;
     };
 }
 while (true);
+
+void Day3()
+{
+    Console.WriteLine("Enter input, followed by \"END\"");
+    int result = 0, result2 = 0;
+    var input = Console.ReadLine();
+    var enabled = true;
+    do
+    {
+        var matches = MultiplyRegex().Matches(input);
+        foreach (var match in matches.ToList())
+        {
+            if (match.Value == "do()")
+            {
+                enabled = true;
+                continue;
+            }
+            else if (match.Value == "don't()")
+            {
+                enabled = false;
+                continue;
+            }
+
+            var splittedInput = match.Value.TrimStart('m')
+                                      .TrimStart('u')
+                                      .TrimStart('l')
+                                      .TrimStart('(')
+                                      .TrimEnd(')')
+                                      .Split(',');
+
+            result += int.Parse(splittedInput[0]) * int.Parse(splittedInput[1]);
+            if (enabled)
+            {
+                result2 += int.Parse(splittedInput[0]) * int.Parse(splittedInput[1]);
+            }
+        }
+
+        input = Console.ReadLine();
+    } while (input != "END");
+
+    Console.WriteLine($"PART 1: {result}");
+    Console.WriteLine($"PART 2: {result2}");
+}
 
 void Day2()
 {
@@ -124,4 +170,10 @@ void Day1()
 
     Console.WriteLine($"PART 1: {sum}");
     Console.WriteLine($"PART 2: {similarity}");
+}
+
+partial class Program
+{
+    [GeneratedRegex("(?:mul\\(\\d{1,3},\\d{1,3}\\))|(?:do\\(\\))|(?:don't\\(\\))")]
+    private static partial Regex MultiplyRegex();
 }
