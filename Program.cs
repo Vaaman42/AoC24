@@ -12,12 +12,107 @@ do
             while (true) Day2();
         case "3":
             while (true) Day3();
+        case "4":
+            while (true) Day4();
         default:
             Console.WriteLine("Incorrect input, try again.");
             break;
     };
 }
 while (true);
+
+void Day4()
+{
+    Console.WriteLine("Enter input, followed by \"END\"");
+    List<List<char>> grid = [];
+    var xmasCount = 0;
+    var input = Console.ReadLine();
+    do
+    {
+        grid.Add(input.ToList());
+        input = Console.ReadLine();
+    } while (input != "END");
+
+    for (var i = 0; i < grid.Count; i++)
+    {
+        var canSearchUp = i >= 3;
+        var canSearchDown = i < grid.Count - 3;
+        for (var j = 0; j < grid[i].Count; j++)
+        {
+            var canSearchLeft = j >= 3;
+            var canSearchRight = j < grid[i].Count - 3;
+            if (grid[i][j] == 'X') //Start checking for XMAS
+            {
+                if (canSearchUp
+                    && grid[i - 1][j] == 'M'
+                    && grid[i - 2][j] == 'A'
+                    && grid[i - 3][j] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchRight
+                    && grid[i][j + 1] == 'M'
+                    && grid[i][j + 2] == 'A'
+                    && grid[i][j + 3] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchDown
+                    && grid[i + 1][j] == 'M'
+                    && grid[i + 2][j] == 'A'
+                    && grid[i + 3][j] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchLeft
+                    && grid[i][j - 1] == 'M'
+                    && grid[i][j - 2] == 'A'
+                    && grid[i][j - 3] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchUp && canSearchRight
+                    && grid[i - 1][j + 1] == 'M'
+                    && grid[i - 2][j + 2] == 'A'
+                    && grid[i - 3][j + 3] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchUp && canSearchLeft
+                    && grid[i - 1][j - 1] == 'M'
+                    && grid[i - 2][j - 2] == 'A'
+                    && grid[i - 3][j - 3] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchDown && canSearchRight
+                    && grid[i + 1][j + 1] == 'M'
+                    && grid[i + 2][j + 2] == 'A'
+                    && grid[i + 3][j + 3] == 'S')
+                {
+                    xmasCount++;
+                }
+
+                if (canSearchDown && canSearchLeft
+                    && grid[i + 1][j - 1] == 'M'
+                    && grid[i + 2][j - 2] == 'A'
+                    && grid[i + 3][j - 3] == 'S')
+                {
+                    xmasCount++;
+                }
+            }
+        }
+    }
+
+    Console.WriteLine($"PART 1: {xmasCount}");
+    Console.WriteLine($"PART 2: ");
+}
 
 void Day3()
 {
